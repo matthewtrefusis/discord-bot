@@ -3,8 +3,8 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('membercount')
-        .setDescription('Displays the number of members in the server.'),
+        .setDescription('Show the server member count.'),
     async execute(interaction) {
-        await interaction.reply(`This server has ${interaction.guild.memberCount} members.`);
+        await interaction.reply({ content: `👥 This server has **${interaction.guild.memberCount}** members.` });
     },
 };
