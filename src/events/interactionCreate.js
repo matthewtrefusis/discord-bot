@@ -1,8 +1,11 @@
+const log = require('../logger');
+
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction) {
         // Handle ticket buttons
         if (interaction.isButton()) {
+            log(`Button used: ${interaction.customId} by ${interaction.user.tag} in ${interaction.guild?.name || 'DM'}`);
             const guild = interaction.guild;
             const member = interaction.member;
             const staffRole = guild.roles.cache.find(r => r.name.toLowerCase().includes('staff'));
@@ -54,11 +57,13 @@ module.exports = {
             }
         }
         if (!interaction.isCommand()) return;
+        log(`Command used: /${interaction.commandName} by ${interaction.user.tag} in ${interaction.guild?.name || 'DM'}`);
         const command = interaction.client.commands.get(interaction.commandName);
         if (!command) return;
         try {
             await command.execute(interaction);
         } catch (error) {
+            log(`Error in command /${interaction.commandName}: ${error}`);
             console.error(error);
             await interaction.reply({ content: 'There was an error executing that command!', ephemeral: true });
         }

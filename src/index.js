@@ -3,12 +3,15 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
+const log = require('./logger');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
+        log('Connected to MongoDB');
         console.log('Connected to MongoDB');
     }).catch((error) => {
+        log('MongoDB connection error: ' + error);
         console.error('MongoDB connection error:', error);
     });
 
@@ -52,4 +55,6 @@ for (const file of eventFiles) {
 const feedWatcher = require('./events/feedWatcher');
 feedWatcher(client);
 
-client.login(process.env.DISCORD_TOKEN);
+log('Bot is starting up...');
+
+client.login(process.env.DISCORD_TOKEN).then(() => log('Bot logged in')).catch(e => log('Login error: ' + e));
