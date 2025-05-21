@@ -49,4 +49,7 @@ for (const file of eventFiles) {
     }
 }
 
+const feedWatcher = require('./events/feedWatcher');
+feedWatcher(client);
+
 client.login(process.env.DISCORD_TOKEN);

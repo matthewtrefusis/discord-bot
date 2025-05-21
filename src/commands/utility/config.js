@@ -49,8 +49,51 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('view')
-                .setDescription('View current configuration')),
-
+                .setDescription('View current configuration'))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('youtube')
+                .setDescription('Configure YouTube feed')
+                .addChannelOption(option =>
+                    option.setName('channel')
+                        .setDescription('Discord channel for YouTube feed')
+                        .setRequired(true))
+                .addStringOption(option =>
+                    option.setName('ytchannels')
+                        .setDescription('Comma-separated YouTube channel IDs')
+                        .setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('twitch')
+                .setDescription('Configure Twitch feed')
+                .addChannelOption(option =>
+                    option.setName('channel')
+                        .setDescription('Discord channel for Twitch feed')
+                        .setRequired(true))
+                .addStringOption(option =>
+                    option.setName('streamers')
+                        .setDescription('Comma-separated Twitch usernames')
+                        .setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('youtubeapikey')
+                .setDescription('Set the YouTube API key for this server')
+                .addStringOption(option =>
+                    option.setName('key')
+                        .setDescription('YouTube API Key')
+                        .setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('twitchapikeys')
+                .setDescription('Set the Twitch API client ID and secret for this server')
+                .addStringOption(option =>
+                    option.setName('clientid')
+                        .setDescription('Twitch Client ID')
+                        .setRequired(true))
+                .addStringOption(option =>
+                    option.setName('clientsecret')
+                        .setDescription('Twitch Client Secret')
+                        .setRequired(true))),
     async execute(interaction) {
         try {
             if (!interaction.guild) {
@@ -172,6 +215,20 @@ module.exports = {
                         });
                     }
                     
+                    if (guildConfig.YouTube) {
+                        embedFields.push({
+                            name: '📺 YouTube Feed',
+                            value: `Channel: <#${guildConfig.YouTube.Channel}>\nChannels: ${guildConfig.YouTube.Channels.join(', ')}`
+                        });
+                    }
+                    
+                    if (guildConfig.Twitch) {
+                        embedFields.push({
+                            name: '🎮 Twitch Feed',
+                            value: `Channel: <#${guildConfig.Twitch.Channel}>\nStreamers: ${guildConfig.Twitch.Streamers.join(', ')}`
+                        });
+                    }
+                    
                     const embed = {
                         color: 0x0099ff,
                         title: '⚙️ Server Configuration',
@@ -180,6 +237,50 @@ module.exports = {
                     };
                     
                     await interaction.reply({ embeds: [embed], ephemeral: true });
+                    break;
+                }
+                case 'youtube': {
+                    const channel = interaction.options.getChannel('channel');
+                    const ytchannels = interaction.options.getString('ytchannels');
+                    const ids = ytchannels.split(',').map(s => s.trim()).filter(Boolean);
+                    guildConfig.YouTubeFeed = {
+                        Channel: channel.id,
+                        Channels: ids,
+                        LastVideos: new Map()
+                    };
+                    await guildConfig.save();
+                    await interaction.reply({ content: `YouTube feed configured for <#${channel.id}>. Watching: ${ids.join(', ')}`, ephemeral: true });
+                    break;
+                }
+                case 'twitch': {
+                    const channel = interaction.options.getChannel('channel');
+                    const streamers = interaction.options.getString('streamers');
+                    const names = streamers.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+                    guildConfig.TwitchFeed = {
+                        Channel: channel.id,
+                        Streamers: names,
+                        LastStreams: new Map()
+                    };
+                    await guildConfig.save();
+                    await interaction.reply({ content: `Twitch feed configured for <#${channel.id}>. Watching: ${names.join(', ')}`, ephemeral: true });
+                    break;
+                }
+                case 'youtubeapikey': {
+                    const key = interaction.options.getString('key');
+                    guildConfig.YouTubeFeed = guildConfig.YouTubeFeed || {};
+                    guildConfig.YouTubeFeed.ApiKey = key;
+                    await guildConfig.save();
+                    await interaction.reply({ content: 'YouTube API key set for this server!', ephemeral: true });
+                    break;
+                }
+                case 'twitchapikeys': {
+                    const clientid = interaction.options.getString('clientid');
+                    const clientsecret = interaction.options.getString('clientsecret');
+                    guildConfig.TwitchFeed = guildConfig.TwitchFeed || {};
+                    guildConfig.TwitchFeed.ClientID = clientid;
+                    guildConfig.TwitchFeed.ClientSecret = clientsecret;
+                    await guildConfig.save();
+                    await interaction.reply({ content: 'Twitch API credentials set for this server!', ephemeral: true });
                     break;
                 }
             }

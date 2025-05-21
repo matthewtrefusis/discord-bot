@@ -29,11 +29,12 @@ module.exports = {
                 });
                 if (!channel) return;
                 // Always include the close button in the ticket channel
-                const closeRow = new (require('discord.js').ActionRowBuilder)().addComponents(
-                    new (require('discord.js').ButtonBuilder)()
+                const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+                const closeRow = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
                         .setCustomId('confirm_close_ticket')
                         .setLabel('Close Ticket')
-                        .setStyle(require('discord.js').ButtonStyle.Danger)
+                        .setStyle(ButtonStyle.Danger)
                 );
                 await channel.send({
                     content: `<@${member.user.id}> Ticket created! A staff member will be with you soon.\nTo close this ticket, use the button below or /ticket close.`,
