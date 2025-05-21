@@ -7,6 +7,6 @@ module.exports = {
         .addStringOption(option => option.setName('input').setDescription('The input to echo').setRequired(true)),
     async execute(interaction) {
         const input = interaction.options.getString('input');
-        await interaction.reply(input);
+        await interaction.reply({ content: input, ephemeral: true });
     },
 };

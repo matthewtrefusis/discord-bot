@@ -6,6 +6,6 @@ module.exports = {
         .setDescription('Displays information about the server.'),
     async execute(interaction) {
         const guild = interaction.guild;
-        await interaction.reply(`Server name: ${guild.name}\nTotal members: ${guild.memberCount}`);
+        await interaction.reply(`Server name: ${guild.name}\nTotal members: ${guild.memberCount}\nCreated: ${guild.createdAt.toLocaleString()}\nOwner: <@${guild.ownerId}>`);
     },
 };
