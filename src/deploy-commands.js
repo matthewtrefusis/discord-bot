@@ -1,17 +1,18 @@
 const { REST, Routes } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
+const path = require('path');
 
 const commands = [];
-const foldersPath = require('path').join(__dirname, '../commands');
+const foldersPath = path.join(__dirname, 'commands'); // Use src/commands relative to this file
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
-    const commandsPath = require('path').join(foldersPath, folder);
+    const commandsPath = path.join(foldersPath, folder);
     if (!fs.lstatSync(commandsPath).isDirectory()) continue;
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
-        const command = require(require('path').join(commandsPath, file));
+        const command = require(path.join(commandsPath, file));
         if (command.data) {
             commands.push(command.data.toJSON());
         }
@@ -30,5 +31,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
         console.log('Successfully reloaded application (/) commands.');
     } catch (error) {
         console.error(error);
+        if (error.code === 50035) {
+            console.error('Check that your CLIENT_ID is correct and that your bot is invited with the applications.commands scope.');
+        }
     }
 })();
