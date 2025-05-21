@@ -33,3 +33,8 @@
 [2025-05-21T12:49:51.785Z] MongoDB connection error: MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
 [2025-05-21T12:51:16.528Z] Bot is starting up...
 [2025-05-21T12:51:17.606Z] Bot logged in
+[2025-05-21T12:51:46.884Z] MongoDB connection error: MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+[2025-05-21T12:53:01.341Z] Command used: /music by unrekable_ in Unrekable's server
+[2025-05-21T12:53:01.342Z] music.js execute called by unrekable_ in Unrekable's server
+[2025-05-21T12:53:01.343Z] /music play command by unrekable_ in Unrekable's server
+[2025-05-21T12:53:03.930Z] Error in command /music: Error: FFmpeg/avconv not found!
