@@ -1,19 +1,6 @@
-[2025-05-21T17:44:56.826Z] Bot is starting up...
-[2025-05-21T17:44:57.181Z] Connected to MongoDB
-[2025-05-21T17:44:57.424Z] Bot logged in
-[2025-05-21T17:45:02.930Z] Command used: /about by unrekable_ in Unrekable's server
-[2025-05-21T17:45:20.546Z] Command used: /8ball by unrekable_ in Unrekable's server
-[2025-05-21T17:45:27.001Z] Command used: /8ball by unrekable_ in Unrekable's server
-[2025-05-21T17:45:32.806Z] Command used: /avatar by unrekable_ in Unrekable's server
-[2025-05-21T17:45:41.230Z] Command used: /botinfo by unrekable_ in Unrekable's server
-[2025-05-21T17:45:50.911Z] Command used: /channelinfo by unrekable_ in Unrekable's server
-[2025-05-21T17:45:59.420Z] Command used: /choose by unrekable_ in Unrekable's server
-[2025-05-21T17:46:04.014Z] Command used: /coinflip by unrekable_ in Unrekable's server
-[2025-05-21T17:46:13.744Z] Command used: /dadjoke by unrekable_ in Unrekable's server
-[2025-05-21T17:49:57.054Z] Bot is starting up...
-[2025-05-21T17:49:57.411Z] Connected to MongoDB
-[2025-05-21T17:49:57.936Z] Bot logged in
-[2025-05-21T17:50:12.268Z] Bot is starting up...
-[2025-05-21T17:50:12.603Z] Connected to MongoDB
-[2025-05-21T17:50:13.015Z] Bot logged in
-[2025-05-21T17:50:17.820Z] Command used: /about by unrekable_ in Unrekable's server
+[2025-05-21T20:15:05.979Z] Bot is starting up...
+[2025-05-21T20:15:06.315Z] Connected to MongoDB
+[2025-05-21T20:15:06.565Z] Bot logged in
+[2025-05-21T20:15:06.571Z] Music player initialized
+[2025-05-21T20:15:06.577Z] Node "Main Node" connected.
+[2025-05-21T20:15:06.578Z] Node "Main Node" encountered an error: Unexpected op "ready" with data: [object Object]

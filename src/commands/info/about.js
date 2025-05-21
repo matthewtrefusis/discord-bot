@@ -6,6 +6,8 @@ module.exports = {
         .setName('about')
         .setDescription('Displays information about the bot.'),
     async execute(interaction) {
+        const log = require('../../logger');
+        log(`about.js execute called by ${interaction.user.tag} in ${interaction.guild?.name || 'DM'}`);
         if (interaction.replied || interaction.deferred) return;
         try {
             const uptime = process.uptime();

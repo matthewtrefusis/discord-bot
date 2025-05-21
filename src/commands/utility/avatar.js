@@ -9,6 +9,9 @@ module.exports = {
                 .setDescription('The user to get the avatar of')
                 .setRequired(false)),
     async execute(interaction) {
+        const log = require('../../logger');
+        log(`avatar.js execute called by ${interaction.user.tag} in ${interaction.guild?.name || 'DM'}`);
+
         const user = interaction.options.getUser('user') || interaction.user;
         await interaction.reply({
             embeds: [{

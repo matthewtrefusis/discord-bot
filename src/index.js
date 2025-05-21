@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Manager } = require('erela.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
@@ -21,8 +22,64 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildMessageReactions
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildVoiceStates // <-- Add this line for voice channel detection
     ]
+});
+
+// Initialize the music player
+client.player = new Manager({
+    nodes: [{
+        host: "localhost",
+        port: 2333,
+        password: "youshallnotpass",
+        identifier: "Main Node",
+        retryAmount: 5,
+        retryDelay: 5000,
+        secure: false
+    }],
+    send: (id, payload) => {
+        const guild = client.guilds.cache.get(id);
+        if (guild) guild.shard.send(payload);
+    },
+    // Add auto reconnect and other helpful options
+    autoPlay: true,
+    clientName: "Discord Music Bot"
+});
+
+// Handle raw WebSocket events
+client.on("raw", (d) => client.player.updateVoiceState(d));
+
+// Music player event handling
+client.player.on("nodeConnect", (node) => {
+    log(`Node "${node.options.identifier}" connected.`);
+    console.log(`Node "${node.options.identifier}" connected.`);
+});
+
+client.player.on("nodeError", (node, error) => {
+    log(`Node "${node.options.identifier}" encountered an error: ${error.message}`);
+    console.error(`Node "${node.options.identifier}" encountered an error:`, error);
+});
+
+client.player.on("trackStart", (player, track) => {
+    const channel = client.channels.cache.get(player.textChannel);
+    if (channel) channel.send(`🎵 Now playing: **${track.title}**`);
+});
+
+client.player.on("queueEnd", (player) => {
+    const channel = client.channels.cache.get(player.textChannel);
+    if (channel) channel.send("Queue ended! Use /play to add more songs.");
+    player.destroy();
+});
+
+client.player.on("socketClosed", (player, payload) => {
+    if (payload.code === 4014) player.destroy();
+});
+
+// Initialize Erela.js when the bot is ready
+client.on("ready", () => {
+    client.player.init(client.user.id);
+    log('Music player initialized');
 });
 
 client.commands = new Collection();
