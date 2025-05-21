@@ -16,6 +16,6 @@ module.exports = {
     async execute(interaction) {
         const question = interaction.options.getString('question');
         const answer = responses[Math.floor(Math.random() * responses.length)];
-        await interaction.reply({ content: `🎱 **Question:** ${question}\n**Answer:** ${answer}` });
+        await interaction.reply({ content: `🎱 ${answer}` });
     },
 };

@@ -31,7 +31,8 @@ function loadCommands(dir) {
     }
 }
 
-const commandsPath = path.join(__dirname, 'commands');
+const commandsPath = path.join(__dirname, 'src', 'commands');
+const commandFolders = fs.readdirSync(commandsPath);
 loadCommands(commandsPath);
 
 client.once('ready', () => {

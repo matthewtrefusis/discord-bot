@@ -10,18 +10,15 @@ module.exports = {
                 .setRequired(true)),
     async execute(interaction) {
         const channel = interaction.options.getChannel('channel');
+        if (!channel) {
+            await interaction.reply({ content: 'Channel not found.', ephemeral: true });
+            return;
+        }
         await interaction.reply({
             embeds: [{
                 color: 0x5865F2,
-                title: `Channel Info: #${channel.name}`,
-                fields: [
-                    { name: 'ID', value: channel.id, inline: true },
-                    { name: 'Type', value: channel.type, inline: true },
-                    { name: 'NSFW', value: channel.nsfw ? 'Yes' : 'No', inline: true },
-                    { name: 'Position', value: `${channel.position}`, inline: true },
-                    { name: 'Created', value: `<t:${Math.floor(channel.createdTimestamp/1000)}:F>`, inline: true }
-                ],
-                timestamp: new Date()
+                title: `#${channel.name}`,
+                description: `ID: ${channel.id}\nType: ${channel.type}`
             }]
         });
     },

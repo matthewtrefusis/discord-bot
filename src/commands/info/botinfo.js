@@ -13,16 +13,8 @@ module.exports = {
         await interaction.reply({
             embeds: [{
                 color: 0x5865F2,
-                title: 'Bot Information',
-                fields: [
-                    { name: 'Servers', value: `${interaction.client.guilds.cache.size}`, inline: true },
-                    { name: 'Users', value: `${interaction.client.users.cache.size}`, inline: true },
-                    { name: 'Uptime', value: `${hours}h ${minutes}m ${seconds}s`, inline: true },
-                    { name: 'Platform', value: os.platform(), inline: true },
-                    { name: 'Node.js', value: process.version, inline: true }
-                ],
-                footer: { text: `Bot by ${interaction.client.user.tag}` },
-                timestamp: new Date()
+                title: 'Bot Info',
+                description: `Uptime: ${hours}h ${minutes}m ${seconds}s`,
             }]
         });
     },

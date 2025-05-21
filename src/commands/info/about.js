@@ -13,16 +13,15 @@ module.exports = {
             const minutes = Math.floor((uptime % 3600) / 60);
             const seconds = Math.floor(uptime % 60);
             const memory = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
-            const info = `I am a comprehensive Discord bot with 100+ commands!\n` +
-                `Uptime: ${hours}h ${minutes}m ${seconds}s\n` +
-                `Memory Usage: ${memory} MB\n` +
-                `Host: ${os.hostname()}`;
-            await interaction.reply(info);
+            await interaction.reply({
+                embeds: [{
+                    color: 0x5865F2,
+                    title: 'About the Bot',
+                    description: `Uptime: ${hours}h ${minutes}m ${seconds}s\nMemory Usage: ${memory} MB\nPlatform: ${os.platform()}\nNode.js: ${process.version}`
+                }]
+            });
         } catch (error) {
-            if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({ content: 'There was an error executing that command!', ephemeral: true });
-            }
-            throw error;
+            await interaction.reply({ content: 'Error fetching bot info.', ephemeral: true });
         }
     },
 };
